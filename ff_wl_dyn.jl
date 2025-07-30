@@ -28,8 +28,10 @@ end
 function initial_correlation_matrix(H, μ_L, μ_R, L::Int)
     beta=1e6
     _, evals, evecs = time_evolution_op(H, 0.0)
-    fL = 1 ./ (1 .+ exp.(beta .* (evals .- μ_L)))
-    fR = 1 ./ (1 .+ exp.(beta .* (evals .- μ_R)))
+    #fL = 1 ./ (1 .+ exp.(beta .* (evals .- μ_L)))
+    #fR = 1 ./ (1 .+ exp.(beta .* (evals .- μ_R)))
+    fL = Float64.(evals .< μ_L)
+    fR = Float64.(evals .< μ_R)
     CL = evecs * Diagonal(fL) * evecs'
     CR = evecs * Diagonal(fR) * evecs'
     C0 = zeros(Complex{Float64}, L, L)
